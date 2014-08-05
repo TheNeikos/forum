@@ -19,6 +19,8 @@ class Forum < Sinatra::Application
       json_error({errors: {email: "is not present"}})
     end
     user = User[email: new_user_data["email"]]
+    login = user.add_user_login(UserLogin.new( :user => user )).inspect
+    {success: true}.to_json
   end
 
 
