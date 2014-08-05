@@ -7,5 +7,7 @@ else
 end
 
 Sequel::Model.plugin :json_serializer
+Sequel::Model.raise_on_typecast_failure = false
+Sequel::Model.raise_on_save_failure = false
 require_relative 'user/models'
 
