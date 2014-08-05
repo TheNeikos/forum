@@ -1,3 +1,4 @@
+require 'pony'
 
 class Forum < Sinatra::Application
 
@@ -19,7 +20,12 @@ class Forum < Sinatra::Application
       json_error({errors: {email: "is not present"}})
     end
     user = User[email: new_user_data["email"]]
-    login = user.add_user_login(UserLogin.new( :user => user )).inspect
+    login = user.add_user_login(UserLogin.new( :user => user ))
+    Pony.mail(:to => user.email,
+              :subject => "Your Login Key for Forums",
+              :html_body => haml(:'user/login_email', locals: {
+                user: user,
+                login_key: login.login_key}))
     {success: true}.to_json
   end
 
