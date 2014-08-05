@@ -1,7 +1,7 @@
 require 'sequel'
 
 class User < Sequel::Model
-  plugin :validate_helpers
+  plugin :validation_helpers
   one_to_many :user_roles
 
   def validate
