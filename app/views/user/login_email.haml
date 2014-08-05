@@ -1,7 +1,9 @@
-%h1 Welcome to this Forum
+%h4 Welcome to this Forum
 %p
   Your Displayname is currently:
-  = user.displayname
+  %strong
+    = user.displayname
 
+%p
   To login please follow this link:
-  %a{href:"http://lvh.me:3000/login/?key=#{login_key}"}
+  %a{href:"http://lvh.me:3000/login/?key=#{login_key}"} Login
