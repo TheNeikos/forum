@@ -30,6 +30,11 @@ class Forum < Sinatra::Application
         halt({ :error => "Malformed Parameters, missing json param #{param}"}.to_json)
       end
     end
+
+    def json_error model
+      halt({ :error => "An error has occured while processing this request",
+             :messages => model.errors}.to_json)
+    end
   end
 
 end

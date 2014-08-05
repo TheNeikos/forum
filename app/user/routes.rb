@@ -8,8 +8,7 @@ class Forum < Sinatra::Application
     if new_user.save then
       new_user.to_json
     else
-      status 400
-      new_user.to_json
+      json_error new_user
     end
   end
 
