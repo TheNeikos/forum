@@ -42,6 +42,18 @@ class Forum < Sinatra::Application
     UserSession.create(user: user).to_json
   end
 
+  post "/api/user/me" do
+    verify_user_logged_in
+    user_data = json_data(:user)
+    verify_user_data(user_data)
+    @cur_user.displayname = user_data.displayname
+    if @cur_user.save then
+      @cur_user.to_json
+    else
+      json_error @cur_user.errors
+    end
+  end
+
   get "/api/user/me" do
     verify_user_logged_in
     @cur_user.to_json
