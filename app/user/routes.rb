@@ -29,6 +29,11 @@ class Forum < Sinatra::Application
     {success: true}.to_json
   end
 
+  get '/api/user/me' do
+    verify_user_logged_in
+
+
+  end
 
   get "/api/users" do
     User.all.to_json
@@ -40,6 +45,12 @@ class Forum < Sinatra::Application
     data.delete_if do |k,d|
       !["displayname", "email"].include?(k)
     end
+  end
+
+  def verify_user_logged_in
+    return if logged_in?
+    status 403
+    json_error(errors: ["You are not logged in"])
   end
 
 end

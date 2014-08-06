@@ -48,13 +48,16 @@ class Forum < Sinatra::Application
     end
 
     def json_error model
+      errors = model.responds_to?(:errors) ? model.errors : model
       halt({ :error => "An error has occured while processing this request",
-             :messages => model.errors}.to_json)
+             :messages => errors}.to_json)
     end
   end
 
 end
 
+
 require_relative 'models_init'
+require_relative 'helpers_init'
 require_relative 'routes_init'
 

@@ -5,6 +5,7 @@ class User < Sequel::Model
   plugin :validation_helpers
   one_to_many :user_roles
   one_to_many :user_logins
+  one_to_many :user_sessions
 
   def validate
     super
@@ -15,7 +16,17 @@ class User < Sequel::Model
 end
 
 class UserRole < Sequel::Model
+  many_to_one :user
+end
 
+class UserSession < Sequel::Model
+  many_to_one :user
+
+  def before_create
+    self.expiry_date = DateTime.now + Rational(6, 24)
+    self.auth_key = SecureRandom.urlsafe_base64
+    super
+  end
 end
 
 class UserLogin < Sequel::Model
