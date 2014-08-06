@@ -27,6 +27,7 @@ class UserSession < Sequel::Model
     self.auth_key = SecureRandom.urlsafe_base64
     super
   end
+
 end
 
 class UserLogin < Sequel::Model
@@ -38,4 +39,8 @@ class UserLogin < Sequel::Model
     super
   end
 
+  def invalidate
+    self.valid = false
+    self.save
+  end
 end
