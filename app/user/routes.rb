@@ -19,7 +19,11 @@ class Forum < Sinatra::Application
     user_data = json_data(:user)
     verify_user_data(user_data)
     user = User.login_with_password user_data
-    UserSession.create(user: user).to_json
+    if user
+      UserSession.create(user: user).to_json
+    else
+      json_error ["Could not log in with E-Mail/Password combination"]
+    end
   end
 
   post "/api/user/me" do
