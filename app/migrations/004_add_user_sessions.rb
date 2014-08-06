@@ -1,4 +1,3 @@
-
 Sequel.migration do
   change do
     create_table :user_sessions do
@@ -8,4 +7,3 @@ Sequel.migration do
     end
   end
 end
-
