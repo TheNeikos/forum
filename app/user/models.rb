@@ -5,14 +5,17 @@ require 'digest'
 class User < Sequel::Model
   plugin :validation_helpers
   one_to_many :user_roles
-  one_to_many :user_logins
   one_to_many :user_sessions
 
   attr_accessor :password
 
-  def before_create
-    self.password_salt = SecureRandom.urlsafe_base64(24)
-    self.password_hash = Digest::SHA512.hexdigest(self.password_salt + self.password)
+  def before_validation
+    if !self.password or self.password.empty? and !self.exists?
+      self.errors.add(:password, "cannot be empty")
+    else
+      self.password_salt = SecureRandom.urlsafe_base64(24)
+      self.password_hash = Digest::SHA512.hexdigest(self.password_salt + self.password)
+    end
     super
   end
 
@@ -27,10 +30,17 @@ class User < Sequel::Model
     self.password_hash == Digest::SHA512.hexdigest(self.password_salt + password)
   end
 
+  def to_json arg=nil
+    {
+      displayname: self.displayname,
+      id: self.pk
+    }.to_json arg
+  end
+
   def self.login_with_password user_data
-    user = User[:email => user_data[:email]]
-    return false unless user
-                    and user.verify_password(user_data[:password])
+    user = User[:email => user_data["email"]]
+    return false unless user and
+                        user.verify_password(user_data["password"])
     user
   end
 end

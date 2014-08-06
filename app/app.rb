@@ -40,10 +40,14 @@ class Forum < Sinatra::Application
     alias_method :h, :escape_html
 
     def json_data param
-      if params[param].is_a? String
-        JSON.parse params[param]
-      else
-        halt({ :error => "Malformed Parameters, missing json param #{param}"}.to_json)
+      begin
+        if params[param].is_a? String
+          JSON.parse params[param]
+        else
+          halt({ :error => "Malformed Parameters, missing json param #{param}"}.to_json)
+        end
+      rescue JSON::ParserError
+        halt({:error => "Malformed JSON"}.to_json)
       end
     end
 
