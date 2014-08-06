@@ -8,6 +8,14 @@ class User < Sequel::Model
   one_to_many :user_logins
   one_to_many :user_sessions
 
+  attr_accessor :password
+
+  def before_create
+    self.password_salt = SecureRandom.urlsafe_base64(24)
+    self.password_hash = Digest::SHA512.hexdigest(self.password_salt + self.password)
+    super
+  end
+
   def validate
     super
     validates_presence [:displayname, :email]
