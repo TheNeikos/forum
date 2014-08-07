@@ -33,7 +33,8 @@ class User < Sequel::Model
   def to_json arg=nil
     {
       displayname: self.displayname,
-      id: self.pk
+      id: self.pk,
+      roles: self.user_roles
     }.to_json arg
   end
 
@@ -45,9 +46,11 @@ class User < Sequel::Model
   end
 end
 
+
 class UserRole < Sequel::Model
   many_to_one :user
 end
+
 
 class UserSession < Sequel::Model
   many_to_one :user
