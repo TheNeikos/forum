@@ -30,7 +30,7 @@ class Forum < Sinatra::Application
     verify_user_logged_in
     user_data = json_data(:user)
     verify_user_data(user_data)
-    @cur_user.displayname = user_data.displayname
+    @cur_user.displayname = user_data["displayname"]
     if @cur_user.save then
       @cur_user.to_json
     else
