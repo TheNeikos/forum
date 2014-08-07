@@ -31,11 +31,13 @@ class User < Sequel::Model
   end
 
   def to_json arg=nil
-    {
+    data = {
       displayname: self.displayname,
       id: self.pk,
-      roles: self.user_roles
-    }.to_json arg
+      roles: self.user_roles,
+    }
+    data[:email] = self.email if arg == :all
+    data.to_json arg
   end
 
   def has_role role
@@ -58,7 +60,6 @@ end
 
 class UserSession < Sequel::Model
   many_to_one :user
-
   def before_create
     self.expiry_date = DateTime.now + Rational(6, 24)
     self.auth_key = SecureRandom.urlsafe_base64

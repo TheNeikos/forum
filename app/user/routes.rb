@@ -38,10 +38,24 @@ class Forum < Sinatra::Application
     end
   end
 
+
   get "/api/user/me" do
     verify_user_logged_in
-    @cur_user.to_json
+    @cur_user.to_json :all
   end
+
+
+  get "/api/user/:id" do
+    user = User[:id => params[:id]]
+    if !user
+      json_error :id => "could not be found"
+    elsif current_user == user
+      user.to_json :all
+    else
+      user.to_json
+    end
+  end
+
 
   get "/api/users" do
     User.all.to_json
