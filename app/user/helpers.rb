@@ -12,6 +12,12 @@ class Forum < Sinatra::Application
       return false unless user_session
       @cur_user = user_session.user
     end
+
+    def current_user_needs_privilege role
+      unless !current_user or !current_user.has_role role
+        json_error :user => "does not have enough privilege"
+      end
+    end
   end
 end
 
