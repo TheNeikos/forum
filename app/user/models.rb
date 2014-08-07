@@ -12,7 +12,7 @@ class User < Sequel::Model
   def before_validation
     if !self.password or self.password.empty? and !self.exists?
       self.errors.add(:password, "cannot be empty")
-    else
+    elsif !self.exists?
       self.password_salt = SecureRandom.urlsafe_base64(24)
       self.password_hash = Digest::SHA512.hexdigest(self.password_salt + self.password)
     end
@@ -36,6 +36,10 @@ class User < Sequel::Model
       id: self.pk,
       roles: self.user_roles
     }.to_json arg
+  end
+
+  def has_role role
+    self.user_roles.any?{|r| r.role == role}
   end
 
   def self.login_with_password user_data
