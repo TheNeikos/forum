@@ -57,7 +57,11 @@ class Forum < Sinatra::Application
     user_data = verify_user_data json_data(:user)
 
     user = user_find params[:id]
-    user.update user_data
+    if user.update user_data
+      user.to_json :all
+    else
+      json_error user.errors
+    end
   end
 
 

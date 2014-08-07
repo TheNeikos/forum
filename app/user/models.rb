@@ -42,7 +42,7 @@ class User < Sequel::Model
 
   def has_role role
     role = [role.to_sym] unless role.is_a? Array
-    self.user_roles.any?{|r| role.includes? r.role.to_sym}
+    self.user_roles.any?{|r| role.include? r.role.to_sym}
   end
 
   def self.login_with_password user_data

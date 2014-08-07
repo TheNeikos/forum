@@ -14,7 +14,7 @@ class Forum < Sinatra::Application
     end
 
     def current_user_needs_privilege role
-      unless !current_user or !current_user.has_role role
+      if current_user and !current_user.has_role role
         json_error :user => "does not have enough privilege"
       end
     end
