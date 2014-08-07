@@ -18,6 +18,14 @@ class Forum < Sinatra::Application
         json_error :user => "does not have enough privilege"
       end
     end
+
+    def user_find criteria
+      user = User[criteria]
+      if !user
+        json_error :user => "could not be found"
+      end
+      user
+    end
   end
 end
 
