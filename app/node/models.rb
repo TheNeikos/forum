@@ -4,8 +4,8 @@ class BaseNode < Sequel::Model
     plugin :timestamps, :update_on_create => true
 
     many_to_one :user
-    many_to_one :root
-    one_to_many :children
+    many_to_one :root, :class => :BaseNode
+    one_to_many :children, :class => :BaseNode
 
     def new
       throw "Can't do this"
@@ -41,6 +41,7 @@ class PostNode < BaseNode
   def validate
     super
     validate_presence_of :root
+    validate_presence_of :user
   end
 end
 
@@ -49,6 +50,7 @@ class ProfileNode < BaseNode
 
   def validate
     super
+    validate_presence_of :user
   end
 end
 
@@ -58,6 +60,16 @@ class StatusNode < BaseNode
   def validate
     super
     validate_presence_of :root
+    validate_presence_of :user
+  end
+end
+
+class CommentNode <  BaseNode
+
+  def validate
+    super
+    validate_presence_of :root
+    validate_presence_of :user
   end
 end
 
