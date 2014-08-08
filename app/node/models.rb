@@ -1,6 +1,7 @@
 
 class BaseNode < Sequel::Model
     plugin :class_table_inheritance
+    plugin :timestamps, :update_on_create => true
 
     many_to_one :user
     many_to_one :root
