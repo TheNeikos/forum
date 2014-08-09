@@ -39,6 +39,14 @@ class BaseNode < Sequel::Model
     self.visible_to |= parent.visible_to if parent
   end
 
+  def inherited type
+    super
+    (@@node_types ||= []) << type
+  end
+
+  def get_node_types
+    @@node_types
+  end
 end
 
 class NodeVisibility < Sequel::Model
