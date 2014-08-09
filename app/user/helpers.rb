@@ -26,6 +26,12 @@ class Forum < Sinatra::Application
       end
       user
     end
+
+    def verify_user_logged_in
+      return if logged_in?
+      status 403
+      json_error(error: "You are not logged in")
+    end
   end
 end
 
