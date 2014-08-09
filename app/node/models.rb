@@ -12,6 +12,17 @@ class BaseNode < Sequel::Model
       throw "Can't do this"
     end
 
+    def can_user_view user
+      true
+    end
+
+    def can_user_edit user
+      return false unless user
+      return false unless can_user_view user
+      return true if self.user == user
+      return true if user.has_role [:moderator, :administrator]
+    end
+
 end
 
 
