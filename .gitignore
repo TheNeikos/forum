@@ -1,2 +1,5 @@
 *.db
 start.sh
+node_modules
+bower_components
+tmp

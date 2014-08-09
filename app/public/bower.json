@@ -1,0 +1,30 @@
+{
+  "name": "Community App Frontend",
+  "version": "0.0.1",
+  "homepage": "https://github.com/TheNeikos/forum",
+  "authors": [
+    "Marcel Mueller <com2040@gmail.com>"
+  ],
+  "description": "The Frontend to the Community App",
+  "main": "main",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "frontend",
+    "angular",
+    "community"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.2.21"
+  }
+}
