@@ -1,46 +1,57 @@
 
 class BaseNode < Sequel::Model
-    plugin :class_table_inheritance, :key => :kind
-    plugin :timestamps, :update_on_create => true
-    plugin :validation_helpers
+  plugin :class_table_inheritance, :key => :kind
+  plugin :timestamps, :update_on_create => true
+  plugin :validation_helpers
 
-    many_to_one :user
-    many_to_one :parent, :class => self, :key => :parent_id
-    one_to_many :children, :class => self, :key => :parent_id
-    one_to_many :visible_to, :class => :NodeVisibility, :key => :node_id
+  many_to_one :user
+  many_to_one :parent, :class => self, :key => :parent_id
+  one_to_many :children, :class => self, :key => :parent_id
+  one_to_many :visible_to, :class => :NodeVisibility, :key => :node_id
 
-    def new
-      throw "Can't do this"
+  def new
+    throw "Can't do this"
+  end
+
+  def can_user_view user
+    true
+  end
+
+  def can_user_edit user
+    return false unless user
+    return false unless can_user_view user
+    return true if self.user == user
+    return true if user.has_role [:moderator, :administrator]
+    false
+  end
+
+  def validate
+    super
+    if parent
+      unless (self.visible_to & parent.visible_to) == parent.visible_to #Checks if our own visibility set is a superset of the parent's
+        errors.add(:visible_to, "cannot have more visibility than parent")
+      end
     end
+  end
 
-    def can_user_view user
-      true
-    end
-
-    def can_user_edit user
-      return false unless user
-      return false unless can_user_view user
-      return true if self.user == user
-      return true if user.has_role [:moderator, :administrator]
-    end
-
-    def validate
-      super
-    end
+  def before_validate
+    super
+    self.visible_to |= parent.visible_to if parent
+  end
 
 end
 
 class NodeVisibility < Sequel::Model
-    many_to_one :node, :class => BaseNode, :key => :node_id
-    many_to_one :user
-    many_to_one :role
+  many_to_one :node, :class => BaseNode, :key => :node_id
+  many_to_one :user
+  many_to_one :role
 
-    def validate
-      super
-      unless user or role
-        errors.add(:user, "needs to be specified, or a Role")
-      end
+  def validate
+    super
+    unless user or role
+      errors.add(:user, "needs to be specified, or a Role")
     end
+  end
 end
 
 class RootNode < BaseNode
