@@ -22,7 +22,7 @@ class Forum < Sinatra::Application
     end
 
     node = get_node_from_string(node_data["type"]).new(node_data["data"])
-
+    node.parent = parent
     if node.save
       node.to_json
     else
