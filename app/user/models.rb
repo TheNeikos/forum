@@ -4,7 +4,7 @@ require 'digest'
 
 class User < Sequel::Model
   plugin :validation_helpers
-  one_to_many :user_roles
+  many_to_many :roles, :join_table => :users_roles
   one_to_many :user_sessions
 
   attr_accessor :password
@@ -34,7 +34,7 @@ class User < Sequel::Model
     data = {
       displayname: self.displayname,
       id: self.pk,
-      roles: self.user_roles,
+      roles: self.roles,
     }
     data[:email] = self.email if arg == :all
     data.to_json arg
@@ -54,8 +54,8 @@ class User < Sequel::Model
 end
 
 
-class UserRole < Sequel::Model
-  many_to_one :user
+class Role < Sequel::Model
+  many_to_many :users, :join_table => :users_roles
 end
 
 
