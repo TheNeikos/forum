@@ -7,6 +7,7 @@ class BaseNode < Sequel::Model
     many_to_one :user
     many_to_one :parent, :class => self, :key => :parent_id
     one_to_many :children, :class => self, :key => :parent_id
+    one_to_many :visible_to, :class => :NodeVisibility, :key => :node_id
 
     def new
       throw "Can't do this"
@@ -23,8 +24,28 @@ class BaseNode < Sequel::Model
       return true if user.has_role [:moderator, :administrator]
     end
 
+    def validate
+      super
+    end
+
 end
 
+class NodeVisibility < Sequel::Model
+    many_to_one :node, :class => BaseNode, :key => :node_id
+    many_to_one :user
+    many_to_one :role
+
+    def validate
+      super
+      unless user or role
+        errors.add(:user, "needs to be specified, or a Role")
+      end
+    end
+end
+
+class RootNode < BaseNode
+
+end
 
 class CategoryNode < BaseNode
 
