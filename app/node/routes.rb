@@ -37,6 +37,20 @@ class Forum < Sinatra::Application
 
   end
 
+  post "/api/node/:id" do
+    verify_user_logged_in
+    node_data = verify_node_data json_data :node
+    node = find_node params[:id]
+    unless node.can_user_edit current_user
+      json_error :user => "You are not authorized to view this."
+    end
+    if node.update node_data
+      node.to_json
+    else
+      json_error node.errors
+    end
+  end
+
   private
 
   def verify_node_data data
@@ -47,7 +61,7 @@ class Forum < Sinatra::Application
 
   def find_node id
     node = BaseNode[id]
-    if node and node.can_user_create_child current_user
+    if node and node.can_user_view current_user
       node
     else
       json_error :user => "You are not authorized to view this."
