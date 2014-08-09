@@ -25,6 +25,10 @@ class BaseNode < Sequel::Model
     false
   end
 
+  def can_user_create_child user, type=nil
+    true
+  end
+
   def validate
     super
     if parent
@@ -39,6 +43,14 @@ class BaseNode < Sequel::Model
     self.visible_to |= parent.visible_to if parent
   end
 
+  def self.inherited type
+    super
+    (@@node_types ||= []) << type.to_s
+  end
+
+  def self.get_node_types
+    @@node_types
+  end
 end
 
 class NodeVisibility < Sequel::Model
