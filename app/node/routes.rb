@@ -45,6 +45,7 @@ class Forum < Sinatra::Application
       node
     else
       json_error :user => "You are not authorized to view this."
+    end
   end
 
 end
