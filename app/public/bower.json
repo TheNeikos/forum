@@ -25,6 +25,8 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "~1.2.21"
+    "angularjs": "~1.2.21",
+    "flatstrap": "~3.1.2",
+    "modernizr": "~2.8.3"
   }
 }
