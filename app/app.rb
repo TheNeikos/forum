@@ -29,6 +29,10 @@ class Forum < Sinatra::Application
   configure :production do
     set :haml, { :ugly => true }
     set :clean_trace, true
+    set :root, File.dirname(__FILE__)
+    set :app_file, __FILE__
+    set :public_folder, Proc.new { File.join(File.dirname(__FILE__), 'public', 'app') }
+    set :static, true
   end
 
   configure :development do
