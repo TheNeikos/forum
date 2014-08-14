@@ -2,6 +2,7 @@
 ENV["environment"] ||= "development"
 
 require 'sinatra'
+require 'sinatra/assetpack'
 require 'haml'
 
 require 'json'
@@ -24,7 +25,29 @@ Pony.options = {
 
 class Forum < Sinatra::Application
 
+  register Sinatra::AssetPack
+
   enable :sessions
+
+  assets do
+    serve '/js', from: 'public/app'
+    serve '/bower_components', from: 'public/bower_components'
+
+    js :modernizr, [
+      "/bower_components/modernizr/modernizr.js"
+    ]
+
+    js :libs, [
+      "/bower_components/angularjs/angularjs.min.js"
+    ]
+
+    js :application, [
+      "/js/main.js"
+    ]
+
+    js_compression :jsmin
+
+  end
 
   configure :production do
     set :haml, { :ugly => true }

@@ -5,5 +5,5 @@
  *
  * */
 
-window.community = angular.module("community", [""]);
+window.community = angular.module("community", ["community-templates"]);
 

@@ -1,8 +1,10 @@
 %html{:"ng-app" => "community"}
   %head
     %title {{page_title}}
+    = js :modernizr
   %body
     %upperbar
     %ng-view#main-view
     %footerbar
-    %script{src:"/javascripts/main.js"}
+    = js :libs
+    = js :application
