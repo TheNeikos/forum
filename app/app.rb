@@ -2,6 +2,7 @@
 ENV["environment"] ||= "development"
 
 require 'sinatra'
+require 'sinatra/assetpack'
 require 'haml'
 
 require 'json'
@@ -24,11 +25,50 @@ Pony.options = {
 
 class Forum < Sinatra::Application
 
+  register Sinatra::AssetPack
+
   enable :sessions
+
+  assets do
+    serve '/js', from: 'public/js'
+    serve '/bower_components', from: 'public/bower_components'
+
+
+    js :modernizr, [
+      "/bower_components/modernizr/modernizr.js"
+    ]
+
+    js :libs, [
+      "/bower_components/angularjs/angularjs.min.js",
+      "/bower_components/angular-ui-router/release/angular-ui-router.min.js"
+    ]
+
+    js :application, [
+      "/js/main.js",
+      "/js/**/*.js"
+    ]
+    js_compression :jsmin
+
+    serve '/css', from: 'public/css'
+
+    css :framework, [
+      "/bower_componentes/flatstrap/dist/flatstrap.css",
+      "/bower_componentes/flatstrap/dist/flatstrap-theme.css"
+    ]
+
+    css :main, [
+      '/css/**/*.css'
+    ]
+
+  end
 
   configure :production do
     set :haml, { :ugly => true }
     set :clean_trace, true
+    set :root, File.dirname(__FILE__)
+    set :app_file, __FILE__
+    set :public_folder, Proc.new { File.join(File.dirname(__FILE__), 'public', 'app') }
+    set :static, true
   end
 
   configure :development do
