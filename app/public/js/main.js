@@ -5,5 +5,5 @@
  *
  * */
 
-window.community = angular.module("community", ["community-templates"]);
+window.community = angular.module("community", ["community-templates", "ui-router"]);
 
