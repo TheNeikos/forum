@@ -30,8 +30,9 @@ class Forum < Sinatra::Application
   enable :sessions
 
   assets do
-    serve '/js', from: 'public/app'
+    serve '/js', from: 'public/js'
     serve '/bower_components', from: 'public/bower_components'
+
 
     js :modernizr, [
       "/bower_components/modernizr/modernizr.js"
@@ -42,10 +43,21 @@ class Forum < Sinatra::Application
     ]
 
     js :application, [
-      "/js/main.js"
+      "/js/main.js",
+      "/js/**/*.js"
+    ]
+    js_compression :jsmin
+
+    serve '/css', from: 'public/css'
+
+    css :framework, [
+      "/bower_componentes/flatstrap/dist/flatstrap.css",
+      "/bower_componentes/flatstrap/dist/flatstrap-theme.css"
     ]
 
-    js_compression :jsmin
+    css :main, [
+      '/css/**/*.css'
+    ]
 
   end
 
