@@ -39,7 +39,7 @@ class Forum < Sinatra::Application
     ]
 
     js :libs, [
-      "/bower_components/angularjs/angularjs.min.js",
+      "/bower_components/angular/angular.min.js",
       "/bower_components/angular-ui-router/release/angular-ui-router.min.js"
     ]
 
