@@ -5,5 +5,10 @@
  *
  * */
 
-window.community = angular.module("community", ["community-templates", "ui-router"]);
+angular.module("community", ["community.templates", "community.index", "community.categories", "community.users"])
+.config(["$stateProvider","$locationProvider", "$urlRouterProvider",
+        function($stateProvider, $locationProvider, $urlRouterProvider) {
+    $locationProvider.html5Mode(true)
+    $urlRouterProvider.otherwise("/");
+}])
 

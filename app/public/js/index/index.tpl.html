@@ -1,0 +1,16 @@
+<div class="row-fluid">
+    <div class="span8">
+        <ul>
+            <li ng-repeat="category in categories">
+                <h2>{{category.name}}</h2>
+            </li>
+        </ul>
+    </div>
+    <div class="span4">
+        <ul>
+            <li ng-repeat="user in users">
+                {{user.displayname}}
+            </li>
+        </ul>
+    </div>
+</div>
