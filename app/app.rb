@@ -52,6 +52,7 @@ class Forum < Sinatra::Application
     serve '/css', from: 'public/css'
 
     css :framework, [
+      "/bower_components/bootstrap/dist/css/bootstrap.css",
       "/bower_components/flatstrap/dist/css/flatstrap.css",
       "/bower_components/flatstrap/dist/css/flatstrap-theme.css"
     ]
