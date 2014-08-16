@@ -1,13 +1,13 @@
-<div class="row-fluid">
-    <div class="span8">
-        <ul>
+<div class="row">
+    <div class="col-md-8">
+        <ul class="list-unstyled">
             <li ng-repeat="category in categories">
                 <h2>{{category.name}}</h2>
             </li>
         </ul>
     </div>
-    <div class="span4">
-        <ul>
+    <div class="col-md-4">
+        <ul class="list-unstyled">
             <li ng-repeat="user in users">
                 {{user.displayname}}
             </li>
