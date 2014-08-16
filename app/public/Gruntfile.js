@@ -4,8 +4,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('bower.json'),
     html2js: {
       options: {
-        module: 'community-templates',
+        module: 'community.templates',
         useStrict: true,
+        base: 'js',
+        rename: function(name) {
+            return  name.replace('.tpl.html', '')
+        }
       },
       main: {
         src: ['js/**/*.tpl.html'],

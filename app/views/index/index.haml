@@ -2,9 +2,12 @@
   %head
     %title {{page_title}}
     = js :modernizr
+    %link{:rel => "stylesheet", :href => "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"}
+    = css :framework, :main
   %body
     %upperbar
-    %ng-view#main-view
+    .container-fluid
+      %ui-view#main-view
     %footerbar
     = js :libs
     = js :application

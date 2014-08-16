@@ -1,5 +1,11 @@
 class Forum < Sinatra::Application
 
+  get "/api/nodes/type/:type" do
+    node = get_node_from_string params[:type]
+    json_error(:type => "Wrong Node Type") unless node
+    node.limit(100).all.to_json
+  end
+
   get "/api/node/:id" do
     if params[:id] == "root"
       node = RootNode.first
